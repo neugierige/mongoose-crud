@@ -13,23 +13,71 @@ const done = function() {
 };
 
 const create = function(givenName, surname, dob, gender, height, weight) {
-  /* Add Code Here */
+  Person.create({
+    'name.given': givenName,
+    'name.surname': surname,
+    dob: dob,
+    gender: gender,
+    height: height,
+    weight: weight
+  })
+  .then(function(person) {
+    console.log(person);
+  })
+  .catch(console.error)
+  .then(done);
 };
 
 const index = function() {
-  /* Add Code Here */
+  // let search = {};
+  Person.find()
+  .then(function(people) {
+    people.forEach(function(person) {
+      console.log(person.toJSON());
+    });
+  })
+  .catch(console.error)
+  // .catch((err) => {
+  //   console.error();
+  // })
+  .then(done);
 };
 
 const show = function(id) {
-  /* Add Code Here */
+  Person.findById(id)
+  .then(function(person) {
+    console.log(person.toJSON());
+  })
+  .catch(console.error)
+  .then(done);
 };
 
 const update = function(id, field, value) {
-  /* Add Code Here */
+  // validates field and value
+  let newObject = {};
+  newObject[field] = value;
+
+  Person.findById(id)
+  .then(function(person) {
+    person[field] = value;
+    return person.save();
+  })
+  .then(function(person) {
+    console.log(person.toJSON());
+  })
+  .catch(console.error)
+  .then(done);
 };
 
 const destroy = function(id) {
-  /* Add Code Here */
+  Person.findById(id)
+  .then(function(person) {
+    console.log(person.toJSON());
+    return person.remove();
+    // why doesn't .deleteOne() work here?
+  })
+  .catch(console.error)
+  .then(done);
 };
 
 db.once('open', function() {
